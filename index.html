@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="nl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#0e121c" />
+  <title>Home Station</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <main class="app-shell">
+    <header class="hero">
+      <div>
+        <p class="eyebrow">SMART THINGS</p>
+        <h1>Home Station</h1>
+        <p class="subtitle">Actuele metingen en fietsadvies</p>
+      </div>
+      <div id="connectionBadge" class="status-badge">
+        <span class="status-dot"></span>
+        <span id="connectionText">Verbinden...</span>
+      </div>
+    </header>
+
+    <section class="weather-grid" aria-label="Actuele metingen">
+      <article class="metric-card temp-card">
+        <span class="metric-icon">🌡️</span>
+        <div>
+          <p class="metric-label">Temperatuur</p>
+          <p class="metric-value"><span id="temperature">--</span><span class="metric-unit"> °C</span></p>
+        </div>
+      </article>
+
+      <article class="metric-card hum-card">
+        <span class="metric-icon">💧</span>
+        <div>
+          <p class="metric-label">Luchtvochtigheid</p>
+          <p class="metric-value"><span id="humidity">--</span><span class="metric-unit"> %</span></p>
+        </div>
+      </article>
+
+      <article class="metric-card rain-card">
+        <span class="metric-icon">🌧️</span>
+        <div>
+          <p class="metric-label">Regen</p>
+          <p id="rainStatus" class="metric-value metric-text">--</p>
+        </div>
+      </article>
+
+      <article class="metric-card wind-card">
+        <span class="metric-icon">💨</span>
+        <div>
+          <p class="metric-label">Wind</p>
+          <p class="metric-value"><span id="wind">--</span><span class="metric-unit"> r/s</span></p>
+        </div>
+      </article>
+    </section>
+
+    <section class="advice-card">
+      <div class="advice-header">
+        <div>
+          <p class="eyebrow">FIETSADVIES</p>
+          <h2 id="advice">Nog geen advies</h2>
+        </div>
+        <div id="adviceIcon" class="advice-icon">🚲</div>
+      </div>
+
+      <p id="adviceDetail" class="advice-detail">Druk op de knop om een nieuw advies te vragen.</p>
+
+      <button id="adviceButton" class="primary-button" type="button">
+        Geef fietsadvies
+      </button>
+
+      <p id="requestStatus" class="request-status" aria-live="polite"></p>
+    </section>
+
+    <footer>
+      <p>Laatste data: <span id="updatedAt">--</span></p>
+    </footer>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
