@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="nl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f5f4ef">
+  <meta name="description" content="Mijn Home Station: live weergegevens en bediening van het fietsadviesrad.">
+  <title>Fietsweer | Home Station</title>
+  <link rel="stylesheet" href="style.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script defer src="config.js"></script>
+  <script defer src="app.js"></script>
+</head>
+<body>
+  <div class="shell">
+    <header class="site-header">
+      <a class="brand" href="./" aria-label="Fietsweer, beginpagina">
+        <span class="brand-mark" aria-hidden="true"><span></span><span></span><span></span></span>
+        <span>FIETSWEER</span>
+      </a>
+      <div class="header-right">
+        <span class="header-meta">MIJN HOME STATION</span>
+        <button id="signOut" class="text-button" type="button" hidden>Uitloggen</button>
+      </div>
+    </header>
+
+    <main>
+      <section class="login-screen" id="loginScreen" aria-labelledby="loginTitle">
+        <div class="login-aside">
+          <span class="eyebrow">PERSOONLIJK DASHBOARD</span>
+          <h1>Even kijken<br>of we kunnen <em>fietsen.</em></h1>
+          <p>De metingen van mijn weerstation, een fietsadvies en de bediening van het rad. Alles op één plek.</p>
+          <div class="line-drawing" aria-hidden="true">
+            <svg viewBox="0 0 360 176" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M10 148H350" stroke="currentColor" opacity=".24" stroke-width="1"/>
+              <circle cx="92" cy="120" r="38" stroke="currentColor" stroke-width="3"/>
+              <circle cx="275" cy="120" r="38" stroke="currentColor" stroke-width="3"/>
+              <path d="m92 120 66-71 48 71H92l43-71h23m48 71 37-71h32m-37 0 37 71" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M130 48h38m67 0h21m-94-6 7-9" stroke="currentColor" stroke-width="4" stroke-linecap="round"/>
+              <path d="M28 41h52m-30-10h39m170-4h62" stroke="currentColor" stroke-width="1.5" opacity=".35" stroke-linecap="round"/>
+            </svg>
+          </div>
+        </div>
+        <div class="login-card">
+          <span class="eyebrow">ALLEEN VOOR MIJ</span>
+          <h2 id="loginTitle">Inloggen</h2>
+          <p class="muted">Log in met je Supabase-account om het adviesrad te bedienen.</p>
+          <form id="loginForm" autocomplete="on">
+            <label for="email">E-mailadres</label>
+            <input id="email" name="email" type="email" autocomplete="email" placeholder="naam@voorbeeld.nl" required>
+            <label for="password">Wachtwoord</label>
+            <input id="password" name="password" type="password" autocomplete="current-password" placeholder="Je wachtwoord" required>
+            <button class="button button-dark" id="loginButton" type="submit">Inloggen <span aria-hidden="true">↗</span></button>
+          </form>
+          <p class="form-message" id="loginMessage" role="status" aria-live="polite"></p>
+        </div>
+      </section>
+
+      <section class="dashboard" id="dashboard" hidden aria-labelledby="dashboardTitle">
+        <div class="page-heading">
+          <div>
+            <span class="eyebrow">PERSOONLIJK WEERSTATION</span>
+            <h1 id="dashboardTitle">Kan ik op de fiets?</h1>
+            <p class="intro">Bekijk het weer buiten en stuur het adviesrad aan.</p>
+          </div>
+          <div class="station-state" id="stationState" role="status">
+            <span class="state-dot" aria-hidden="true"></span>
+            <span id="stateText">Meetgegevens ophalen...</span>
+          </div>
+        </div>
+
+        <div class="content-grid">
+          <div class="left-column">
+            <section class="advice-panel" aria-labelledby="adviceTitle">
+              <div class="section-top"><span class="eyebrow">01 / HET FIETSADVIES</span><span id="adviceTime" class="fine-print">—</span></div>
+              <div class="advice-content">
+                <p class="tiny-label">De laatste uitkomst</p>
+                <h2 id="adviceTitle"><span id="adviceValue">Nog geen advies</span></h2>
+                <p class="advice-detail" id="adviceDetail">Vraag een advies aan op basis van de actuele meetgegevens.</p>
+              </div>
+              <div class="advice-action">
+                <button type="button" id="adviceButton" class="button button-dark">Geef fietsadvies <span aria-hidden="true">↗</span></button>
+                <p>Gebruikt het weer van je sensoren en laat het echte rad draaien.</p>
+              </div>
+            </section>
+
+            <section class="manual-panel" aria-labelledby="manualTitle">
+              <div class="section-top"><span class="eyebrow">02 / HANDMATIGE BEDIENING</span></div>
+              <h2 id="manualTitle">Zelf een stand kiezen</h2>
+              <p class="subcopy">Handig om het rad te testen, zonder het weeradvies te gebruiken.</p>
+              <div class="manual-options" role="group" aria-label="Handmatig adviesrad draaien">
+                <button class="manual-option" type="button" data-stand="0"><span class="manual-number">01</span><span class="manual-label">Ja</span><span class="manual-arrow" aria-hidden="true">↗</span></button>
+                <button class="manual-option" type="button" data-stand="1"><span class="manual-number">02</span><span class="manual-label">Jas mee</span><span class="manual-arrow" aria-hidden="true">↗</span></button>
+                <button class="manual-option" type="button" data-stand="2"><span class="manual-number">03</span><span class="manual-label">Eerder weg</span><span class="manual-arrow" aria-hidden="true">↗</span></button>
+                <button class="manual-option" type="button" data-stand="3"><span class="manual-number">04</span><span class="manual-label">Nee</span><span class="manual-arrow" aria-hidden="true">↗</span></button>
+              </div>
+              <p class="command-message" id="commandMessage" role="status" aria-live="polite">Nog geen opdracht verstuurd.</p>
+            </section>
+          </div>
+
+          <aside class="weather-panel" aria-labelledby="weatherTitle">
+            <div class="section-top"><span class="eyebrow">03 / BUITEN GEMETEN</span><span class="fine-print">WEERSTATION</span></div>
+            <h2 id="weatherTitle">Het weer nu</h2>
+            <p class="subcopy">Rechtstreeks van mijn Home Station.</p>
+            <div class="weather-list">
+              <div class="weather-item"><div><span class="weather-label">Temperatuur</span><span class="weather-caption">DHT22</span></div><strong id="tempValue">—</strong></div>
+              <div class="weather-item"><div><span class="weather-label">Regen</span><span class="weather-caption">Regensensor</span></div><strong id="rainValue">—</strong></div>
+              <div class="weather-item"><div><span class="weather-label">Wind</span><span class="weather-caption">Omwentelingen / sec.</span></div><strong id="windValue">—</strong></div>
+              <div class="weather-item"><div><span class="weather-label">Luchtvochtigheid</span><span class="weather-caption">DHT22</span></div><strong id="humidityValue">—</strong></div>
+            </div>
+            <div class="weather-footer">
+              <span class="small-dot" aria-hidden="true"></span>
+              <span id="updatedText">Nog geen metingen ontvangen.</span>
+            </div>
+          </aside>
+        </div>
+        <p class="disclaimer">De windwaarde is nog niet gekalibreerd naar km/u. Het fietsadvies gebruikt voorlopig testgrenzen.</p>
+      </section>
+    </main>
+
+    <footer class="site-footer"><span>HOME STATION · EIGEN PROJECT</span><span>SMART THINGS / 2026</span></footer>
+  </div>
+</body>
+</html>
